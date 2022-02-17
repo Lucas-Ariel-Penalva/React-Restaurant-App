@@ -9,7 +9,7 @@ import axios from "axios";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const Login = () => {
+const Login = ({authenticate}) => {
   const emailRef = useRef();
   const errorRef = useRef();
 
@@ -25,8 +25,6 @@ const Login = () => {
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     emailRef.current.focus();
@@ -44,30 +42,6 @@ const Login = () => {
     setValidMatch(match);
   }, [password, matchPassword]);
 
-  useEffect(() => {
-    setErrorMessage("");
-  }, [email, password, matchPassword]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const Url = "http://challenge-react.alkemy.org/";
-
-    const Data = { email: "challenge@alkemy.org", password: "react" };
-
-    //THIS WORKS AND ABSOLUTELY GETS US A TOKEN
-
-    axios({
-      method: "POST",
-      url: Url,
-      data: Data,
-    }).then((res) => console.log(JSON.stringify(res)));
-
-    console.log(JSON.stringify());
-
-    //Use try/catch.
-    //if success, send user to menu page.
-  };
 
   return (
     <section className="flex flex-col justify-center items-center h-screen bg-gray-200">
@@ -76,17 +50,10 @@ const Login = () => {
           <p className="p-1 font-extrabold text-xl text-gray-800">Register</p>
         </div>
 
-        <p
-          ref={errorRef}
-          className={errorMessage ? "" : "sr-only"}
-          aria-live="assertive"
-        >
-          {errorMessage}
-        </p>
 
         <h1 className="mt-3 text-gray-700">Sign up to order.</h1>
 
-        <form onSubmit={handleSubmit} className="flex flex-col mt-3">
+        <form onSubmit={authenticate} className="flex flex-col mt-3">
           <label
             htmlFor="email"
             className="flex items-center mt-1 text-lg font-bold text-gray-700"
