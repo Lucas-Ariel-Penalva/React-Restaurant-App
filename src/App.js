@@ -1,81 +1,46 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-import axios from "axios";
 import Login from "./views/Login";
 import Menu from "./views/Menu";
 import Profile from "./views/Profile";
 import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
-  //const apiKey = "d8093bd4f8084658b7b0ba0c844ce6a3";
-  //ejemplo https://api.spoonacular.com/recipes/716429/information?apiKey=YOUR-API-KEY&includeNutrition=true.
 
-  const [auth, setAuth] = useLocalStorage("auth", false);
+  //The keys are the emails, each key contains an object with the password, the token received on account creation and all the orders.
+  const [users, setUsers] = useLocalStorage("users", {});
 
-  //If token is present, sign in automatically by touching the button = set auth to true
-  
+  //Tuple, first item is false if not logged. if logged, first item matches an email and second item has to match the token.
+  const [activeUser, setActiveUser] = useLocalStorage("activeUser", [false, ""]);
 
-  const [tokenObtained, setTokenObtained] = useLocalStorage("tokenObtained", false);
-
-  
-  // Array filled with objects {}, the objects are sorted by date
-  const [orders, setOrders] = useLocalStorage("orders", []);
-
-
-  const authenticate = async (e) => {
-    e.preventDefault();
-/*
-    const URL = "http://challenge-react.alkemy.org/";
-
-    const DATA = { email: "challenge@alkemy.org", password: "react" };
-
-    //THIS WORKS AND ABSOLUTELY GETS US A TOKEN
-
-    axios({
-      method: "POST",
-      url: URL,
-      data: DATA,
-    }).then((res) => console.log(JSON.stringify(res)));
-
-    console.log(JSON.stringify());
-
-    //Use try/catch.
-    //if success, send user to menu page.
-    */
-   setAuth(true);
-  };
-
-
-
-
-
-
-  const LogOut = () => {
-    //Set local storage logged state to false.
-  };
+  //on Sign in, check users object for the email and and user.password. for the password match.
+  //If results are valid, set the auth tuple to [username, token];
 
   return (
-
     <Routes>
-    
-      {!auth && (
+      {!activeUser[0] && (
         <Route
           path="/login"
-          element={<Login authenticate={authenticate}/>}
+          element={
+            <Login users={users} setUsers={setUsers} setActiveUser={setActiveUser} />
+          }
         ></Route>
       )}
 
-      {auth && (
+      {activeUser[0] && (
         <>
           <Route path="/menu" element={<Menu />}></Route>
           <Route
             path="/profile"
-            element={<Profile logOut={() => setAuth(false)} />}
+            element={<Profile logOut={() => setActiveUser([false,""])} />}
           ></Route>
         </>
       )}
 
-      <Route path="*" element={<Navigate to={auth ? "/profile" : "/login" } />} />
+      <Route
+        path="*"
+        element={<Navigate to={activeUser[0] ? "/profile" : "/login"} />}
+      />
     </Routes>
   );
 }

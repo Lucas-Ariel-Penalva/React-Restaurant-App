@@ -8,13 +8,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/*
 
-const Login = ({authenticate}) => {
+TAREAS
+
+// MARCAR EFECTIVAMENTE CUANDO EL BOTON ESTE DISABLED
+// NOTIFICAR EN EL CAMPO DE EMAIL CUANDO EL EMAIL YA ESTE REGISTRADO
+// HACER LA VIEW DE LOGIN
+//TERMINAR DE HACER ESTILOS.
+
+
+*/
+const Login = ({ users, setUsers, setActiveUser }) => {
   const emailRef = useRef();
-  const errorRef = useRef();
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
+  const [newEmail, setNewEmail] = useState(true);
   const [emailFocus, setEmailFocus] = useState(false);
 
   const [password, setPassword] = useState("");
@@ -25,7 +35,6 @@ const Login = ({authenticate}) => {
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
 
-
   useEffect(() => {
     emailRef.current.focus();
   }, []);
@@ -33,7 +42,12 @@ const Login = ({authenticate}) => {
   useEffect(() => {
     const result = EMAIL_REGEX.test(email);
     setValidEmail(result);
-  }, [email]);
+  }, [users, email]);
+
+  useEffect(() => {
+    const result = users[email] === undefined;
+    setNewEmail(result);
+  }, [users, email]);
 
   useEffect(() => {
     const result = password.length >= 8 && password.length <= 24;
@@ -42,6 +56,36 @@ const Login = ({authenticate}) => {
     setValidMatch(match);
   }, [password, matchPassword]);
 
+  const authenticate = async (e) => {
+    e.preventDefault();
+
+    const URL = "http://challenge-react.alkemy.org/";
+    const DATA = { email: "challenge@alkemy.org", password: "react" };
+
+    axios({
+      method: "POST",
+      url: URL,
+      data: DATA,
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          const token = res.data.token;
+          const newUser = {};
+          newUser[email] = { orders: [], token: token, password: password };
+
+          setUsers({
+            ...users,
+            ...newUser,
+          });
+         
+          setActiveUser([email, token]);
+        } else alert("something went wrong");
+      })
+      .catch((e) => {
+        alert("error while trying to register account");
+        console.log(e);
+      });
+  };
 
   return (
     <section className="flex flex-col justify-center items-center h-screen bg-gray-200">
@@ -50,22 +94,22 @@ const Login = ({authenticate}) => {
           <p className="p-1 font-extrabold text-xl text-gray-800">Register</p>
         </div>
 
-
         <h1 className="mt-3 text-gray-700">Sign up to order.</h1>
 
         <form onSubmit={authenticate} className="flex flex-col mt-3">
+
           <label
             htmlFor="email"
             className="flex items-center mt-1 text-lg font-bold text-gray-700"
           >
             Email:
-            <span className={validEmail ? "" : "hidden"}>
+            <span className={(validEmail && newEmail) ? "" : "hidden"}>
               <FontAwesomeIcon
                 icon={faCheck}
                 className="block ml-1 h-6 w-6 text-green-600"
               />
             </span>
-            <span className={validEmail || !email ? "hidden" : ""}>
+            <span className={!email  || (newEmail && validEmail) ? "hidden" : ""}>
               <FontAwesomeIcon
                 icon={faTimes}
                 className="block ml-1 h-6 w-6 text-red-600"
@@ -89,7 +133,7 @@ const Login = ({authenticate}) => {
 
           <div
             className={
-              emailFocus && email && !validEmail
+              emailFocus && email && (!validEmail || !newEmail)
                 ? "flex items-center mt-1"
                 : "sr-only"
             }
@@ -99,9 +143,11 @@ const Login = ({authenticate}) => {
               className="text-indigo-500 h-5 w-5"
             />
             <p className="ml-2 font-semibold text-gray-800">
-              Write a valid Email adress.
+              {!validEmail ? "Write a valid Email adress." : "This account already exists."}
             </p>
           </div>
+
+
 
           <label
             htmlFor="password"
@@ -199,9 +245,11 @@ const Login = ({authenticate}) => {
 
           <button
             disabled={
-              !validEmail || !validPassword || !validMatch ? true : false
+              !validEmail || !validPassword || !validMatch || !newEmail
+                ? true
+                : false
             }
-            className="mt-4 py-2 rounded-lg bg-indigo-500 text-white font-bold text-xl"
+            className="mt-4 py-2 rounded-lg shadow-xl bg-indigo-500 text-gray-100 hover:bg-indigo-600 hover:text-white disabled:opacity-60 disabled:pointer-events-none font-bold disabled:shadow-none text-xl"
           >
             Sign Up
           </button>
@@ -209,7 +257,10 @@ const Login = ({authenticate}) => {
         <div className="mt-3 flex text-gray-700 font-semibold">
           <p>
             Already registered?{" "}
-            <span className="text-indigo-700 font-semibold"> Sign in </span>
+            <button className="text-indigo-500 font-bold hover:text-indigo-700">
+              {" "}
+              Sign in{" "}
+            </button>
           </p>
         </div>
       </div>
