@@ -1,15 +1,27 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCartPlus } from "@fortawesome/free-solid-svg-icons";
 
-const MenuCard = ({ image, title, pricePerServing, readyInMinutes,currentOrder ,setCurrentOrder }) => {
+const MenuCard = ({ image, title, pricePerServing, readyInMinutes, healthScore, isVegan, currentOrder ,setCurrentOrder }) => {
+
+
+  // PRIORIDAD: DISENAR COMO SE VA A AGREGAR EL LOGO CUANDO isVegan is true
+  // AGREGAR UN BOTON para mostrar el Health Score;
+  //CORREGIR TODO LO QUE TIENE QUE VER CON EL PRECIO.
 
   function updateOrder(){
-    let copy = currentOrder.slice();
-    copy.push(title);
+    let updatedOrder = {...currentOrder}
+    if(!updatedOrder[title]){
+      updatedOrder[title] = {price: pricePerServing,
+        quantity: 1,
+        readyInMinutes: readyInMinutes
+      }
 
-  console.log("working...")
-  setCurrentOrder(copy)
+    } else updatedOrder[title].quantity++
+
+    setCurrentOrder(updatedOrder)
   }
+
+
 
   return (
     <div className="mt-3">
@@ -25,7 +37,7 @@ const MenuCard = ({ image, title, pricePerServing, readyInMinutes,currentOrder ,
             <p className="px-1 py-1 rounded-lg bg-yellow-500 text-white font-bold">
               {pricePerServing}$
             </p>
-            <h3 className="ml-3 text-lg text-gray-800 font-extrabold">
+            <h3 className="ml-3 text-lg leading-tight text-gray-800 font-extrabold">
               {title}
             </h3>
           </div>
