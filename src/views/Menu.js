@@ -4,31 +4,10 @@ import Order from "../components/Order";
 import Navigation from "../components/Navigation";
 import useLocalStorage from "../hooks/useLocalStorage";
 import Footer from "../components/Footer";
+import { createSearchParams } from "react-router-dom";
 
 const Menu = () => {
-  const [menuItems, setMenuItems] = useState([
-    {
-      title: "Misdrevauser",
-      pricePerServing: 34,
-      readyInMinutes: 25,
-      image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/200.png",
-      id: 123445,
-      healthScore: 98,
-      isVegan: false,
-      aggregateLikes: 39,
-    },
-    {
-      title: "Calabazinger",
-      pricePerServing: 12,
-      readyInMinutes: 15,
-      image:
-        "https://www.lechepuleva.es/documents/13930/203222/calabaza_g.jpg/200c1562-c6dc-4eab-b392-cbf62a1109b1?t=1426759698000",
-      id: 12343,
-      healthScore: 2,
-      isVegan: true,
-      aggregateLikes: 12,
-    },
-  ]);
+  const [menuItems, setMenuItems] = useState(dummyData);
 
   const [currentOrder, setCurrentOrder] = useState({});
   const [currentTotal, setCurrentTotal] = useState(0);
@@ -49,9 +28,8 @@ const Menu = () => {
 
   // Esto carga el menu, desactivado para no gastar puntos.
   useEffect(() => {
-    //ACA PONE TRY getMenu(), o catch (setMenuItems(dummy data!))
-    //getMenu();
-  }, []);
+      // getMenu()
+  } , []);
 
   useEffect(() => {
     let total = 0;
@@ -128,7 +106,7 @@ const Menu = () => {
       </button>
 
       <main className="gridTest mt-4">
-        {menuItems.map((item) => (
+        {menuItems.length && menuItems.map((item) => (
           <MenuCard
             title={item.title}
             image={item.image}
@@ -151,7 +129,7 @@ const Menu = () => {
           disabled={Object.keys(currentOrder).length === 0 ? true : false }
           className="ml-8 mr-2 px-2 py-1 bg-indigo-500 text-white rounded-lg font-bold shadow-lg disabled:opacity-60 disabled:pointer-events-none disabled:shadow-none text-xl"
         >
-          Confirm Order, disable this if !curr.order
+          Confirm Order
         </button>
       </section>
 
@@ -159,5 +137,29 @@ const Menu = () => {
     </div>
   );
 };
+
+const dummyData = [
+  {
+    title: "Misdrevauser",
+    pricePerServing: 34,
+    readyInMinutes: 25,
+    image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/200.png",
+    id: 123445,
+    healthScore: 98,
+    isVegan: false,
+    aggregateLikes: 39,
+  },
+  {
+    title: "Calabazinger",
+    pricePerServing: 12,
+    readyInMinutes: 15,
+    image:
+      "https://www.lechepuleva.es/documents/13930/203222/calabaza_g.jpg/200c1562-c6dc-4eab-b392-cbf62a1109b1?t=1426759698000",
+    id: 12343,
+    healthScore: 2,
+    isVegan: true,
+    aggregateLikes: 12,
+  },
+]
 
 export default Menu;

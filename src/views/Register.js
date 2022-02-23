@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import Swal from 'sweetalert2'
 import { Link } from "react-router-dom";
 import {
   faCheck,
@@ -25,6 +26,8 @@ const Register = ({ users, setUsers, setActiveUser }) => {
   const [matchPassword, setMatchPassword] = useState("");
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
+
+
 
   useEffect(() => {
     emailRef.current.focus();
@@ -64,16 +67,32 @@ const Register = ({ users, setUsers, setActiveUser }) => {
           const newUser = {};
           newUser[email] = { orders: [], token: token, password: password };
 
-          setUsers({
-            ...users,
-            ...newUser,
-          });
-         
-          setActiveUser([email, token]);
-        } else alert("something went wrong");
+          Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Confirm account creation?',
+              showCancelButton:true
+          }).then(result =>{
+            if(result.isConfirmed){
+              setUsers({
+                ...users,
+                ...newUser,
+              });
+              setActiveUser([email, token])
+            }
+          })
+        } else Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'The server responded with an error.'
+      })
       })
       .catch((e) => {
-        alert("error while trying to register account");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'The server responded with an error.',
+      })
         console.log(e);
       });
   };

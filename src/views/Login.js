@@ -13,7 +13,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Login = ({users, setActiveUser}) => {
 
-    //terminar logIn function que va a settear el activeUser cuando se encuentre que el email y el password matchean con un usuario. EN caso de que no funcione, poner un warning.
+    //terminar logIn function que va a settear el activeUser cuando se encuentre que el email y el password matchean con un usuario. EN caso de que no funcione, poner un waring.
 
 
     const emailRef = useRef()
@@ -47,7 +47,11 @@ const Login = ({users, setActiveUser}) => {
     const logIn = (e) =>{
         e.preventDefault()
         console.log("trying to log in")
-    }
+        if(users[email] && users[email].password === password){
+            console.log('success')
+            setActiveUser([email, users[email].token])
+        } else console.log('failed log in')
+     }
 
   return (
     <section className="flex flex-col justify-center items-center h-screen bg-gray-200">
