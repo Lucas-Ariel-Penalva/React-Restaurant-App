@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Register from "./views/Register";
 import Login from "./views/Login";
 import Menu from "./views/Menu";
 import Profile from "./views/Profile";
+import About from "./views/About"
 import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
@@ -19,12 +20,20 @@ function App() {
   return (
     <Routes>
       {!activeUser[0] && (
+        <>
         <Route
-          path="/login"
+          path="/register"
           element={
-            <Login users={users} setUsers={setUsers} setActiveUser={setActiveUser} />
+            <Register users={users} setUsers={setUsers} setActiveUser={setActiveUser} />
           }
         ></Route>
+        <Route
+        path="/login"
+        element={
+          <Login users={users} setActiveUser={setActiveUser} />
+        }
+      ></Route>
+      </>
       )}
 
       {activeUser[0] && (
@@ -34,12 +43,16 @@ function App() {
             path="/profile"
             element={<Profile logOut={() => setActiveUser([false,""])} />}
           ></Route>
+              <Route
+            path="/about"
+            element={<About />}
+          ></Route>
         </>
       )}
 
       <Route
         path="*"
-        element={<Navigate to={activeUser[0] ? "/profile" : "/login"} />}
+        element={<Navigate to={activeUser[0] ? "/menu" : "/register"} />}
       />
     </Routes>
   );

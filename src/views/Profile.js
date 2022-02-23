@@ -1,21 +1,32 @@
 import { Link } from "react-router-dom"
+import { useState } from "react"
+import useLocalStorage from "../hooks/useLocalStorage"
+
+
+import Navigation from "../components/Navigation"
 import Order from "../components/Order"
+import Footer from "../components/Footer"
 
 const Profile = ({logOut}) => {
 
-  //IMPORTA EL LOCAL STORAGE ARRAY CON LAS ORDERS, Y EXPRESALAS CON ORDER COMPONENT
   //SI ESTA VACIO, USA UN CONDICIONAL PARA MOSTRAR QUE AHI VAN A ESTAR LAS ORDENES
-  
-
+  const [users, setUsers] = useLocalStorage("users", {});
+  const [activeUser, setActiveUser] = useLocalStorage("activeUser", "");
+  const [orders, setOrders] = useState(users[activeUser[0]].orders, []);
 
 
   return (
     <div>
+      <Navigation />
       My Orders page, where all the shopping cart of the account is shown
-      <Link to="/menu">Go to the menu</Link>
-    <button onClick={logOut}>Log Out</button>
-
-    <button>Delete account</button>
+    <button onClick={logOut} className="p-3 bg-indigo-500 text-white">Log Out</button>
+    <main>
+      {!orders ? "Your orders will show here" : orders.map((order, index) => {
+        console.log(order)
+       return <Order currentOrder={order} currentTotal={order.total} key={index} />
+      }) }
+    </main>
+    <Footer />
     </div>
   )
 }
