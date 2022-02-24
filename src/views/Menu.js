@@ -4,7 +4,6 @@ import Order from "../components/Order";
 import Navigation from "../components/Navigation";
 import useLocalStorage from "../hooks/useLocalStorage";
 import Footer from "../components/Footer";
-import { createSearchParams } from "react-router-dom";
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState(dummyData);
@@ -28,8 +27,8 @@ const Menu = () => {
 
   // Esto carga el menu, desactivado para no gastar puntos.
   useEffect(() => {
-      // getMenu()
-  } , []);
+    // getMenu()
+  }, []);
 
   useEffect(() => {
     let total = 0;
@@ -50,9 +49,9 @@ const Menu = () => {
   };
 
   return (
-    <div className=" bg-gray-200">
+    <div className="bg-gray-200">
       <Navigation />
-
+      <div className="mt-4">
       <button
         className="bg-black text-white p-3 rounded-lg"
         onClick={() =>
@@ -105,28 +104,31 @@ const Menu = () => {
         Sort by Likes
       </button>
 
+      </div>
+
       <main className="gridTest mt-4">
-        {menuItems.length && menuItems.map((item) => (
-          <MenuCard
-            title={item.title}
-            image={item.image}
-            pricePerServing={item.pricePerServing}
-            readyInMinutes={item.readyInMinutes}
-            key={item.id}
-            healthScore={item.healthScore}
-            isVegan={item.isVegan}
-            aggregateLikes={item.aggregateLikes}
-            currentOrder={currentOrder}
-            setCurrentOrder={setCurrentOrder}
-          />
-        ))}
+        {menuItems.length &&
+          menuItems.map((item) => (
+            <MenuCard
+              title={item.title}
+              image={item.image}
+              pricePerServing={item.pricePerServing}
+              readyInMinutes={item.readyInMinutes}
+              key={item.id}
+              healthScore={item.healthScore}
+              isVegan={item.isVegan}
+              aggregateLikes={item.aggregateLikes}
+              currentOrder={currentOrder}
+              setCurrentOrder={setCurrentOrder}
+            />
+          ))}
       </main>
 
       <section className="flex justify-center items-center mt-20">
         <Order currentOrder={currentOrder} currentTotal={currentTotal} />
         <button
           onClick={confirmOrder}
-          disabled={Object.keys(currentOrder).length === 0 ? true : false }
+          disabled={Object.keys(currentOrder).length === 0 ? true : false}
           className="ml-8 mr-2 px-2 py-1 bg-indigo-500 text-white rounded-lg font-bold shadow-lg disabled:opacity-60 disabled:pointer-events-none disabled:shadow-none text-xl"
         >
           Confirm Order
@@ -160,6 +162,6 @@ const dummyData = [
     isVegan: true,
     aggregateLikes: 12,
   },
-]
+];
 
 export default Menu;

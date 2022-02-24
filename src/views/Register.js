@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import {
   faCheck,
@@ -26,8 +26,6 @@ const Register = ({ users, setUsers, setActiveUser }) => {
   const [matchPassword, setMatchPassword] = useState("");
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
-
-
 
   useEffect(() => {
     emailRef.current.focus();
@@ -68,58 +66,70 @@ const Register = ({ users, setUsers, setActiveUser }) => {
           newUser[email] = { orders: [], token: token, password: password };
 
           Swal.fire({
-              icon: 'success',
-              title: 'Success!',
-              text: 'Confirm account creation?',
-              showCancelButton:true
-          }).then(result =>{
-            if(result.isConfirmed){
+            icon: "success",
+            title: "Success!",
+            text: "Confirm account creation?",
+            showCancelButton: true,
+          }).then((result) => {
+            if (result.isConfirmed) {
               setUsers({
                 ...users,
                 ...newUser,
               });
-              setActiveUser([email, token])
+              setActiveUser([email, token]);
             }
-          })
-        } else Swal.fire({
-          icon: 'error',
-          title: 'Error!',
-          text: 'The server responded with an error.'
-      })
+          });
+        } else
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "The server responded with an error.",
+          });
       })
       .catch((e) => {
         Swal.fire({
-          icon: 'error',
-          title: 'Error!',
-          text: 'The server responded with an error.',
-      })
+          icon: "error",
+          title: "Error!",
+          text: "The server responded with an error.",
+        });
         console.log(e);
       });
   };
 
   return (
-    <section className="flex flex-col justify-center items-center h-screen bg-gray-200">
-      <div className="bg-white w-9/12 max-w-lg px-6 py-3 border-2 rounded-lg shadow-lg">
-        <div className="text-center border-b-2">
-          <p className="p-1 font-extrabold text-xl text-gray-800">Register</p>
+    <section className="flex flex-col justify-center items-center h-screen bg-gradient-to-r from-indigo-400 to-indigo-800">
+      <h1 className="ml-5 mr-5 text-3xl sm:text-4xl lg:text-5xl text-gray-100 font-extrabold text-center">
+        Welcome to our restaurant!
+      </h1>
+      <div className="mt-1 bg-gradient-to-l from-indigo-600 to-indigo-200 rounded-lg w-1/2 h-2 sm:h-3 md:max-w-md lg:max-w-lg lg:h-4"></div>
+
+      <div className="mt-7 w-9/12 max-w-lg px-6 py-3 bg-white border-2 rounded-lg shadow-lg hover:border-indigo-500 transition-all duration-300">
+        <div className="text-center border-b-2 sm:border-b-4">
+          <h3 className="p-1 font-extrabold text-xl text-gray-700 sm:text-2xl lg:text-3xl sm:mb-1">
+            Register
+          </h3>
         </div>
 
-        <h1 className="mt-3 text-gray-700">Sign up to order.</h1>
+        <h1 className="mt-3 text-gray-700 sm:text-lg">Sign up to order.</h1>
 
-        <form onSubmit={authenticate} className="flex flex-col mt-3">
-
+        <form
+          onSubmit={authenticate}
+          className="flex flex-col mt-3 sm:text-lg transition-all duration-300"
+        >
           <label
             htmlFor="email"
             className="flex items-center mt-1 text-lg font-bold text-gray-700"
           >
             Email:
-            <span className={(validEmail && newEmail) ? "" : "hidden"}>
+            <span className={validEmail && newEmail ? "" : "hidden"}>
               <FontAwesomeIcon
                 icon={faCheck}
                 className="block ml-1 h-6 w-6 text-green-600"
               />
             </span>
-            <span className={!email  || (newEmail && validEmail) ? "hidden" : ""}>
+            <span
+              className={!email || (newEmail && validEmail) ? "hidden" : ""}
+            >
               <FontAwesomeIcon
                 icon={faTimes}
                 className="block ml-1 h-6 w-6 text-red-600"
@@ -153,11 +163,11 @@ const Register = ({ users, setUsers, setActiveUser }) => {
               className="text-indigo-500 h-5 w-5"
             />
             <p className="ml-2 font-semibold text-gray-800">
-              {!validEmail ? "Write a valid Email adress." : "This account already exists."}
+              {!validEmail
+                ? "Write a valid Email adress."
+                : "This account already exists."}
             </p>
           </div>
-
-
 
           <label
             htmlFor="password"
@@ -259,15 +269,20 @@ const Register = ({ users, setUsers, setActiveUser }) => {
                 ? true
                 : false
             }
-            className="mt-4 py-2 rounded-lg shadow-xl bg-indigo-500 text-gray-100 hover:bg-indigo-600 hover:text-white disabled:opacity-60 disabled:pointer-events-none font-bold disabled:shadow-none text-xl"
+            className="mt-4 py-2 rounded-lg shadow-xl bg-indigo-500 text-gray-100 hover:bg-indigo-600 hover:text-white disabled:opacity-60 disabled:pointer-events-none font-bold disabled:shadow-none text-xl sm:text-2xl"
           >
             Sign Up
           </button>
         </form>
-        <div className="mt-3 flex text-gray-700 font-semibold">
+        <div className="mt-3 flex text-gray-700 font-semibold sm:text-lg">
           <p>
             Already registered?{" "}
-            <Link to="/login" className="text-indigo-500 font-bold hover:text-indigo-700">Log in</Link>
+            <Link
+              to="/login"
+              className="text-indigo-500 text-lg sm:text-xl font-bold hover:text-indigo-700"
+            >
+              Log in
+            </Link>
           </p>
         </div>
       </div>
