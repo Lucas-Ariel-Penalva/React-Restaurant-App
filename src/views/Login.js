@@ -73,7 +73,6 @@ const Login = ({ users, setActiveUser }) => {
           </h3>
         </div>
 
-
         <form
           onSubmit={logIn}
           className="flex flex-col mt-3 sm:text-lg transition-all duration-300"

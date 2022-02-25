@@ -45,7 +45,6 @@ const Profile = () => {
       }
       setUsers(updatedUsers)
       setActiveUser(false);
-      //window.location.href = '/register'
       Swal.fire({
         icon: 'success',
         title: 'Your account was deleted successfully.'
@@ -61,7 +60,7 @@ const Profile = () => {
 */
 
   return (
-    <div>
+    <div className="h-full">
       <Navigation />
       My Orders page, where all the shopping cart of the account is shown
       <div className="flex">
@@ -70,7 +69,7 @@ const Profile = () => {
         </button>
         <button className="p-3 bg-red-500 text-white">Delete Account </button>
       </div>
-      <main>
+      <main className="min-h-screen">
         {!orders.length
           ? "Your orders will show here"
           : orders.map((order, index) => {

@@ -8,7 +8,7 @@ function getSavedValue(key, initialValue) {
   if (initialValue instanceof Function) return initialValue();
 
   return initialValue;
-}
+} 
 
 const useLocalStorage = (key, initialValue) => {
   const [value, setValue] = useState(() => {

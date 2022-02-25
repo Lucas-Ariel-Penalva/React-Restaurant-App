@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCartPlus, faLeaf } from "@fortawesome/free-solid-svg-icons";
 
-const MenuCard = ({ image, title, pricePerServing, readyInMinutes, healthScore, isVegan, aggregateLikes, currentOrder ,setCurrentOrder }) => {
+const MenuCard = ({ image, title, pricePerServing, readyInMinutes, healthScore, vegan, aggregateLikes, currentOrder ,setCurrentOrder }) => {
 
 
   // PRIORIDAD: DISENAR COMO SE VA A AGREGAR EL LOGO CUANDO isVegan is true
@@ -44,7 +44,7 @@ const MenuCard = ({ image, title, pricePerServing, readyInMinutes, healthScore, 
 
           <div>
             <p> Health Score : {healthScore}</p>
-            <p><FontAwesomeIcon icon={faLeaf} />Vegan: {isVegan ? "Yes" : "No"}</p>
+            <p><FontAwesomeIcon icon={faLeaf} />Vegan: {vegan ? "Yes" : "No"}</p>
             <p>Likes: {aggregateLikes}</p>
           </div>
 
