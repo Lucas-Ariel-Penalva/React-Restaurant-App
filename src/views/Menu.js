@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import MenuCard from "../components/MenuCard";
+import Autocomplete from "../components/Autocomplete";
 import Order from "../components/Order";
 import Navigation from "../components/Navigation";
 import SortButtons from "../components/SortButtons";
@@ -13,6 +14,18 @@ const Menu = () => {
   const [currentTotal, setCurrentTotal] = useState(0);
   const [users, setUsers] = useLocalStorage("users", {});
   const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState([
+    {
+    "id": 296687,
+    "title": "chicken",
+    "imageType": "jpeg"
+    },
+    {
+    "id": 637876,
+    "title": "chicken 65",
+    "imageType": "jpg"
+    }
+    ])
 
   const initialMenuIds = [716426, 715594, 782600, 716429, 715497, 646512];
   const API_KEY = "d8093bd4f8084658b7b0ba0c844ce6a3";
@@ -100,15 +113,46 @@ const Menu = () => {
 
       <section className="flex flex-col justify-center items-center mt-20">
 
+      <div className="justify-center items-center flex flex-col">
+        <h3 className="text-indigo-600 sm:text-lg lg:text-xl font-light">Not finding what you want?</h3>
+        <h1 className="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-center text-indigo-600">Search and add from <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600">Spoonacular's API</span></h1>
+
+
       <input
         type="text"
         id="search"
         autoComplete="off"
         onChange={(e) => {
           setSearchInput(e.target.value);
+          /* Temporary disabled to save points
+          if(searchInput.length >= 3){
+
+            const getSearchResults = async () => {
+              const res = await fetch(
+                `https://api.spoonacular.com/recipes/autocomplete?apiKey=${API_KEY}&number=2&query=${searchInput}`
+                
+              );
+              const searchRes = await res.json()
+              setSearchResults(searchRes)
+            };
+
+            getSearchResults();
+            console.log(searchResults)
+          }
+          */
         }}
-        className="mt-1 mb-10 input-indigo"
+        className="mt-2 mb-10 input-indigo sm:px-4 sm:mt-3 lg:w-80 transition-all duration-300"
       />
+
+      {!searchResults.length ? "" : searchResults.map(result =>
+      <Autocomplete title={result.title} id={result.id} setMenuItems={setMenuItems} menuItems={menuItems} key={result.id} APIKEY={API_KEY} />
+        
+    )}
+      
+      </div>
+
+
+<div className="min-h-[200px] flex flex-col items-center">
 
       {Object.keys(currentOrder).length > 0 &&  <><Order currentOrder={currentOrder} currentTotal={currentTotal} setCurrentOrder={setCurrentOrder} /><button
           onClick={confirmOrder}
@@ -119,6 +163,7 @@ const Menu = () => {
         </button></>}
        
 
+        </div>
 
       </section>
 
@@ -126,6 +171,9 @@ const Menu = () => {
     </div>
   );
 };
+
+
+
 
 const exampleMenu = [
   {
@@ -141,7 +189,7 @@ const exampleMenu = [
   },
   {
     title: "Falafel with spinach",
-    pricePerServing: 100,
+    pricePerServing: 100.10,
     readyInMinutes: 15,
     image:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Falafel_balls.jpg/640px-Falafel_balls.jpg",
