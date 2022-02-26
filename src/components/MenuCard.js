@@ -1,30 +1,38 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock, faCartPlus, faLeaf } from "@fortawesome/free-solid-svg-icons";
+import {
+  faClock,
+  faCartPlus,
+  faLeaf,
+  faHeart,
+  faThumbsUp,
+} from "@fortawesome/free-solid-svg-icons";
 
-const MenuCard = ({ image, title, pricePerServing, readyInMinutes, healthScore, vegan, aggregateLikes, currentOrder ,setCurrentOrder }) => {
-
-
-  // PRIORIDAD: DISENAR COMO SE VA A AGREGAR EL LOGO CUANDO isVegan is true
-  // AGREGAR UN BOTON para mostrar el Health Score;
-  //CORREGIR TODO LO QUE TIENE QUE VER CON EL PRECIO.
-
-  function updateOrder(){
-    let updatedOrder = {...currentOrder}
-    if(!updatedOrder[title]){
-      updatedOrder[title] = {price: pricePerServing,
+const MenuCard = ({
+  image,
+  title,
+  pricePerServing,
+  readyInMinutes,
+  healthScore,
+  vegan,
+  aggregateLikes,
+  currentOrder,
+  setCurrentOrder,
+}) => {
+  function updateOrder() {
+    let updatedOrder = { ...currentOrder };
+    if (!updatedOrder[title]) {
+      updatedOrder[title] = {
+        price: pricePerServing,
         quantity: 1,
-        readyInMinutes: readyInMinutes
-      }
+        readyInMinutes: readyInMinutes,
+      };
+    } else updatedOrder[title].quantity++;
 
-    } else updatedOrder[title].quantity++
-
-    setCurrentOrder(updatedOrder)
+    setCurrentOrder(updatedOrder);
   }
 
-
-
   return (
-    <div className="mt-3">
+    <div className="mt-3 hover:scale-105 transition-all duration-300">
       <div className="flex flex-col items-center">
         <img
           src={image}
@@ -42,16 +50,31 @@ const MenuCard = ({ image, title, pricePerServing, readyInMinutes, healthScore, 
             </h3>
           </div>
 
-          <div>
-            <p> Health Score : {healthScore}</p>
-            <p><FontAwesomeIcon icon={faLeaf} />Vegan: {vegan ? "Yes" : "No"}</p>
-            <p>Likes: {aggregateLikes}</p>
+          <div className="mt-1 ml-2 p-1 font-medium text-gray-800">
+            <div className="flex items-center">
+              <FontAwesomeIcon
+                icon={faHeart}
+                className="fill-current text-red-600"
+              />
+              <p className="ml-1">Health Score: {healthScore}</p>
+            </div>
+            <div className="flex items-center">
+              <FontAwesomeIcon
+                icon={faLeaf}
+                className="fill-current text-green-600"
+              />
+              <p className="ml-1">Vegan: {vegan ? "Yes" : "No"}</p>
+            </div>
+            <div className="flex items-center">
+              <FontAwesomeIcon
+                icon={faThumbsUp}
+                className="fill-current text-blue-600"
+              />
+              <p className="ml-1">Likes: {aggregateLikes}</p>
+            </div>
           </div>
 
-  
-
-
-          <div className="flex justify-between mt-3">
+          <div className="flex justify-between mt-1">
             <div className="flex items-center">
               <FontAwesomeIcon
                 icon={faClock}
@@ -62,8 +85,9 @@ const MenuCard = ({ image, title, pricePerServing, readyInMinutes, healthScore, 
               </p>
             </div>
 
-            <button className="py-1 px-2 uppercase bg-green-500 text-white font-semibold rounded-lg shadow"
-            onClick={updateOrder}
+            <button
+              className="py-1 px-2 uppercase bg-green-500 text-gray-100 font-bold rounded-lg shadow hover:bg-green-600 hover:text-white hover:scale-105 transition-all duration-300"
+              onClick={updateOrder}
             >
               Order
               <FontAwesomeIcon icon={faCartPlus} className="ml-1" />

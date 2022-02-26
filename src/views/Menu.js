@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import MenuCard from "../components/MenuCard";
 import Order from "../components/Order";
 import Navigation from "../components/Navigation";
-import SortButtons from "../components/SortButtons"
+import SortButtons from "../components/SortButtons";
 import Footer from "../components/Footer";
 import useLocalStorage from "../hooks/useLocalStorage";
 
@@ -12,9 +12,10 @@ const Menu = () => {
   const [currentOrder, setCurrentOrder] = useState({});
   const [currentTotal, setCurrentTotal] = useState(0);
   const [users, setUsers] = useLocalStorage("users", {});
+  const [searchInput, setSearchInput] = useState("");
 
   const initialMenuIds = [716426, 715594, 782600, 716429, 715497, 646512];
-  const API_KEY = "d8093bd4f8084658b7b0ba0c844ce6a3"
+  const API_KEY = "d8093bd4f8084658b7b0ba0c844ce6a3";
 
   //Remember you are putting your actual API key here.
   const getMenu = async () => {
@@ -27,7 +28,8 @@ const Menu = () => {
     setMenuItems(menu);
   };
 
-  // Esto carga el menu, desactivado para no gastar puntos.
+  //Cambia este useffect a un boton que hace el fetch
+
   useEffect(() => {
     //getMenu()
   }, []);
@@ -41,21 +43,43 @@ const Menu = () => {
   }, [currentOrder]);
 
   const confirmOrder = () => {
-    const finalizedOrder = { ...currentOrder, total: currentTotal };
-    const email = JSON.parse(localStorage.getItem("activeUser"))[0];
-    const userCopy = { ...users };
-    userCopy[email].orders.push(finalizedOrder);
+    Swal.fire({
+      icon: "question",
+      title: "Confirm your order?",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const finalizedOrder = { ...currentOrder, total: currentTotal };
+        const email = JSON.parse(localStorage.getItem("activeUser"))[0];
+        const userCopy = { ...users };
+        userCopy[email].orders.push(finalizedOrder);
 
-    setUsers(userCopy);
-    setCurrentOrder({});
+        setUsers(userCopy);
+        setCurrentOrder({});
+
+        Swal.fire({
+          icon: "success",
+          title: "Your order was made!",
+        });
+      }
+    });
   };
 
   return (
     <div className="bg-gradient-to-b from-indigo-100 to-indigo-300 min-h-screen">
       <Navigation />
+
+      <div className="mt-4 lg:mt-5 flex flex-col justify-center items-center text-center text-indigo-900 font-extrabold sm:text-lg lg:text-xl transition-all duration-300">
+        <h2>Pick items and confirm your order below. </h2>
+
+        <p className="mt-1 sm:mt-2">
+          You can use these buttons to sort the menu by what interests you.
+        </p>
+      </div>
+
       <SortButtons menuItems={menuItems} setMenuItems={setMenuItems} />
 
-      <main className="gridTest mt-6">
+      <main className="grid rows gap-5 sm:gap-7 mt-7">
         {menuItems.length &&
           menuItems.map((item) => (
             <MenuCard
@@ -73,15 +97,29 @@ const Menu = () => {
           ))}
       </main>
 
-      <section className="flex justify-center items-center mt-20">
-        <Order currentOrder={currentOrder} currentTotal={currentTotal} />
-        <button
+
+      <section className="flex flex-col justify-center items-center mt-20">
+
+      <input
+        type="text"
+        id="search"
+        autoComplete="off"
+        onChange={(e) => {
+          setSearchInput(e.target.value);
+        }}
+        className="mt-1 mb-10 input-indigo"
+      />
+
+      {Object.keys(currentOrder).length > 0 &&  <><Order currentOrder={currentOrder} currentTotal={currentTotal} setCurrentOrder={setCurrentOrder} /><button
           onClick={confirmOrder}
           disabled={Object.keys(currentOrder).length === 0 ? true : false}
-          className="ml-8 mr-2 px-2 py-1 bg-indigo-500 text-white rounded-lg font-bold shadow-lg disabled:opacity-60 disabled:pointer-events-none disabled:shadow-none text-xl"
+          className="my-6 px-2 py-2 rounded-lg shadow-xl bg-indigo-600 text-gray-100 hover:bg-indigo-700 hover:scale-105 transition-all duration-300 hover:text-white disabled:opacity-60 disabled:pointer-events-none font-bold disabled:shadow-none text-xl sm:text-2xl"
         >
-          Confirm Order
-        </button>
+          Make Order
+        </button></>}
+       
+
+
       </section>
 
       <Footer />
@@ -89,13 +127,13 @@ const Menu = () => {
   );
 };
 
-
 const exampleMenu = [
   {
     title: "Hamburguer with fries",
     pricePerServing: 340.5,
     readyInMinutes: 30,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/640px-RedDot_Burger.jpg",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/640px-RedDot_Burger.jpg",
     id: 1,
     healthScore: 35,
     vegan: false,
@@ -155,9 +193,7 @@ const exampleMenu = [
     healthScore: 81,
     vegan: false,
     aggregateLikes: 204,
-  }
+  },
 ];
 
-
-// https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Various_sushi%2C_beautiful_October_night_at_midnight.jpg/640px-Various_sushi%2C_beautiful_October_night_at_midnight.jpg
 export default Menu;
