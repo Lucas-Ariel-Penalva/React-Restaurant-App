@@ -6,6 +6,7 @@ import Profile from "./views/Profile";
 import About from "./views/About";
 import useLocalStorage from "./hooks/useLocalStorage";
 
+
 function App() {
 
   // The keys of the Users array are the emails, and each key contains an object with the password, the token received on account creation and all the orders.

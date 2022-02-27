@@ -1,6 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
+  "homepage":"https://Lucas-Ariel-Penalva.github.io/React-Restaurant-App",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.3.0",
@@ -18,6 +19,8 @@
     "web-vitals": "^2.1.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -43,6 +46,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.0",
+    "gh-pages": "^3.2.3",
     "postcss": "^8.4.5",
     "tailwindcss": "^3.0.7"
   }
