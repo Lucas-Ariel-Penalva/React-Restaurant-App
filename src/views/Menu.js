@@ -14,23 +14,25 @@ const Menu = () => {
   const [currentTotal, setCurrentTotal] = useState(0);
   const [users, setUsers] = useLocalStorage("users", {});
   const [searchInput, setSearchInput] = useState("");
-  const [searchResults, setSearchResults] = useState([
-    {
-    "id": 296687,
-    "title": "chicken",
-    "imageType": "jpeg"
-    },
-    {
-    "id": 637876,
-    "title": "chicken 65",
-    "imageType": "jpg"
-    }
-    ])
+  const [searchResults, setSearchResults] = useState([])
+
+    const [presentItems, setPresentItems] = useState({})
+
+
+    useEffect(e =>{
+      let itemDict = {}
+      for(let item of menuItems){
+        itemDict[item.title] = true;
+      }
+      setPresentItems(itemDict)
+    },[])
+
+    console.log(presentItems)
+ 
 
   const initialMenuIds = [716426, 715594, 782600, 716429, 715497, 646512];
   const API_KEY = "d8093bd4f8084658b7b0ba0c844ce6a3";
 
-  //Remember you are putting your actual API key here.
   const getMenu = async () => {
     const res = await fetch(
       `https://api.spoonacular.com/recipes/informationBulk?apiKey=${API_KEY}&ids=${initialMenuIds.join(
@@ -115,21 +117,21 @@ const Menu = () => {
 
       <div className="justify-center items-center flex flex-col">
         <h3 className="text-indigo-600 sm:text-lg lg:text-xl font-light">Not finding what you want?</h3>
-        <h1 className="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-center text-indigo-600">Search and add from <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600">Spoonacular's API</span></h1>
+        <h1 className="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-center text-indigo-600">Search and add from <a className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600 hover:text-green-500" href="https://spoonacular.com/food-api" target="_blank" rel="noreferrer">Spoonacular's API</a></h1>
 
-
+<div>
       <input
         type="text"
         id="search"
         autoComplete="off"
+        placeholder="Search here."
         onChange={(e) => {
           setSearchInput(e.target.value);
-          /* Temporary disabled to save points
           if(searchInput.length >= 3){
 
             const getSearchResults = async () => {
               const res = await fetch(
-                `https://api.spoonacular.com/recipes/autocomplete?apiKey=${API_KEY}&number=2&query=${searchInput}`
+                `https://api.spoonacular.com/recipes/autocomplete?apiKey=${API_KEY}&number=3&query=${searchInput}`
                 
               );
               const searchRes = await res.json()
@@ -139,20 +141,24 @@ const Menu = () => {
             getSearchResults();
             console.log(searchResults)
           }
-          */
+          
         }}
-        className="mt-2 mb-10 input-indigo sm:px-4 sm:mt-3 lg:w-80 transition-all duration-300"
+        className="mt-2 px-2 py-1 border-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 sm:px-4 sm:mt-3 lg:w-80 shadow-xl transition-all duration-300"
       />
 
-      {!searchResults.length ? "" : searchResults.map(result =>
-      <Autocomplete title={result.title} id={result.id} setMenuItems={setMenuItems} menuItems={menuItems} key={result.id} APIKEY={API_KEY} />
+      {!searchResults.length ? "" : searchResults.filter(result => presentItems[result.title] !== true).map(result =>
+      <Autocomplete title={result.title} id={result.id} setMenuItems={setMenuItems} menuItems={menuItems} key={result.id} API_KEY={API_KEY} presentItems={presentItems} setPresentItems={setPresentItems} />
         
     )}
+    </div>
       
       </div>
 
 
-<div className="min-h-[200px] flex flex-col items-center">
+
+
+
+<div className="mt-10 min-h-[200px] flex flex-col items-center">
 
       {Object.keys(currentOrder).length > 0 &&  <><Order currentOrder={currentOrder} currentTotal={currentTotal} setCurrentOrder={setCurrentOrder} /><button
           onClick={confirmOrder}
@@ -175,6 +181,10 @@ const Menu = () => {
 
 
 
+
+
+
+
 const exampleMenu = [
   {
     title: "Hamburguer with fries",
@@ -183,9 +193,9 @@ const exampleMenu = [
     image:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/640px-RedDot_Burger.jpg",
     id: 1,
-    healthScore: 35,
+    healthScore: 23,
     vegan: false,
-    aggregateLikes: 1284,
+    aggregateLikes: 867,
   },
   {
     title: "Falafel with spinach",
@@ -205,7 +215,7 @@ const exampleMenu = [
     image:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Rock_salmon_with_shrimp_and_saffron_sauce_on_a_bed_of_spinach_%282600406103%29.jpg/640px-Rock_salmon_with_shrimp_and_saffron_sauce_on_a_bed_of_spinach_%282600406103%29.jpg",
     id: 3,
-    healthScore: 67,
+    healthScore: 56,
     vegan: false,
     aggregateLikes: 2,
   },
@@ -229,7 +239,7 @@ const exampleMenu = [
     id: 5,
     healthScore: 2,
     vegan: false,
-    aggregateLikes: 5384,
+    aggregateLikes: 1086,
   },
   {
     title: "Gourmet Sushi",
@@ -238,7 +248,7 @@ const exampleMenu = [
     image:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Various_sushi%2C_beautiful_October_night_at_midnight.jpg/640px-Various_sushi%2C_beautiful_October_night_at_midnight.jpg",
     id: 6,
-    healthScore: 81,
+    healthScore: 66,
     vegan: false,
     aggregateLikes: 204,
   },

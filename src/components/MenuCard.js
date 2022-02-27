@@ -86,7 +86,7 @@ const MenuCard = ({
             </div>
 
             <button
-              className="py-1 px-2 uppercase bg-green-500 text-gray-100 font-bold rounded-lg shadow hover:bg-green-600 hover:text-white hover:scale-105 transition-all duration-300"
+              className="py-1 px-2 uppercase bg-green-500 text-gray-100 font-bold rounded-lg shadow hover:bg-green-600 hover:text-white active:text-yellow-400"
               onClick={updateOrder}
             >
               Order

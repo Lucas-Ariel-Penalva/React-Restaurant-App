@@ -1,28 +1,24 @@
 
-const Autocomplete = ({title,id, APIKEY, menuItems, setMenuItems}) => {
-    //result.id
-    //result.title
-    /*
-    {
-"id": 296687,
-"title": "chicken",
-}
-    */
-console.log(menuItems)
+const Autocomplete = ({title,id, API_KEY, menuItems, setMenuItems, presentItems, setPresentItems}) => {
+
   return (
-    <div className="bg-red-500 text-xl flex">
-        <h3>{title}</h3>
+    <div className="p-2 flex justify-between bg-white text-gray-900 lg:text-lg hover:bg-gray-300 transition-all duration-300">
+        <h3 className="truncate w-32 sm:w-36 lg:w-56">{title}</h3>
         <button onClick={ async() => {
             const updatedMenu = menuItems.slice();
-            const res = await fetch(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${APIKEY}?includeNutrition=false`)
+            const res = await fetch(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}?includeNutrition=false`)
             const newItem = await res.json()
             updatedMenu.push(newItem)
-            setMenuItems(updatedMenu)
+
+            let newItemDict = {...presentItems};
+            newItemDict[title] = true;
+            setPresentItems(newItemDict);
+            setMenuItems(updatedMenu);
 
 
 
 
-        }} className="ml-3 bg-green-500 text-white">Add</button>
+        }} className="ml-3 lg:ml-6 px-1 bg-green-500 text-gray-100 rounded-lg uppercase font-semibold hover:text-white hover:bg-green-600">Add</button>
         </div>
   )
 }
