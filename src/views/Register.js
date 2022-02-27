@@ -48,6 +48,8 @@ const Register = ({ users, setUsers, setActiveUser }) => {
     setValidMatch(match);
   }, [password, matchPassword]);
 
+  // Uses AXIOS to make a POST to Alkemy, if the response is OK a new account is created in Local Storage.
+
   const authenticate = async (e) => {
     e.preventDefault();
 

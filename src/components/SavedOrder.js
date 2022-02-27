@@ -2,11 +2,12 @@ import React from "react";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const SavedOrder = ({order, number}) => {
-
+const SavedOrder = ({ order, number }) => {
   return (
     <section className="flex flex-col items-center justify-center p-4 md:text-lg text-gray-100 font-bold bg-indigo-700 rounded hover:scale-105 hover:text-white transition-all duration-300">
-      <h2 className="text-xl font-extrabold md:text-2xl">Saved order # {number + 1}</h2>
+      <h2 className="text-xl font-extrabold md:text-2xl">
+        Saved order # {number + 1}
+      </h2>
       <ul className="mt-2">
         {Object.keys(order)
           .filter((key) => key !== "total")

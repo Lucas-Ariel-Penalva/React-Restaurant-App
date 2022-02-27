@@ -9,45 +9,28 @@ import Footer from "../components/Footer";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const Menu = () => {
-  const [menuItems, setMenuItems] = useState(exampleMenu);
-  const [currentOrder, setCurrentOrder] = useState({});
-  const [currentTotal, setCurrentTotal] = useState(0);
-  const [users, setUsers] = useLocalStorage("users", {});
-  const [searchInput, setSearchInput] = useState("");
-  const [searchResults, setSearchResults] = useState([])
-
-    const [presentItems, setPresentItems] = useState({})
-
-
-    useEffect(e =>{
-      let itemDict = {}
-      for(let item of menuItems){
-        itemDict[item.title] = true;
-      }
-      setPresentItems(itemDict)
-    },[])
-
-    console.log(presentItems)
- 
-
-  const initialMenuIds = [716426, 715594, 782600, 716429, 715497, 646512];
   const API_KEY = "d8093bd4f8084658b7b0ba0c844ce6a3";
 
-  const getMenu = async () => {
-    const res = await fetch(
-      `https://api.spoonacular.com/recipes/informationBulk?apiKey=${API_KEY}&ids=${initialMenuIds.join(
-        ","
-      )}`
-    );
-    const menu = await res.json();
-    setMenuItems(menu);
-  };
+  const [menuItems, setMenuItems] = useState(exampleMenu);
+  const [users, setUsers] = useLocalStorage("users", {});
 
-  //Cambia este useffect a un boton que hace el fetch
+  const [currentOrder, setCurrentOrder] = useState({});
+  const [currentTotal, setCurrentTotal] = useState(0);
 
-  useEffect(() => {
-    //getMenu()
+  const [searchResults, setSearchResults] = useState([]);
+  const [presentItems, setPresentItems] = useState({});
+
+  // PresentItems is an object that tracks which items are present in the menu so we can avoid showing them as a search result or adding them again. This object was created to allow checking in constant time.
+
+  useEffect((e) => {
+    let itemDict = {};
+    for (let item of menuItems) {
+      itemDict[item.title] = true;
+    }
+    setPresentItems(itemDict);
   }, []);
+
+  // Calculates the total price every time the current order is modified.
 
   useEffect(() => {
     let total = 0;
@@ -56,6 +39,8 @@ const Menu = () => {
     }
     setCurrentTotal(total);
   }, [currentOrder]);
+
+  // Persists order in Local Storage.
 
   const confirmOrder = () => {
     Swal.fire({
@@ -78,6 +63,22 @@ const Menu = () => {
         });
       }
     });
+  };
+
+  // Calls Spoonacular API endpoint that returns de IDs of foods that match the search query.
+
+  const searchSpoonacular = (searchInput) => {
+    if (searchInput.length >= 3) {
+      const getSearchResults = async () => {
+        const res = await fetch(
+          `https://api.spoonacular.com/recipes/autocomplete?apiKey=${API_KEY}&number=3&query=${searchInput}`
+        );
+        const searchRes = await res.json();
+        setSearchResults(searchRes);
+      };
+
+      getSearchResults();
+    } else setSearchResults([]);
   };
 
   return (
@@ -112,65 +113,70 @@ const Menu = () => {
           ))}
       </main>
 
-
       <section className="flex flex-col justify-center items-center mt-20">
+        <div className="justify-center items-center flex flex-col">
+          <h3 className="text-indigo-600 sm:text-lg lg:text-xl font-light">
+            Not finding what you want?
+          </h3>
+          <h1 className="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-center text-indigo-600">
+            Search and add from{" "}
+            <a
+              className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600 hover:text-green-500"
+              href="https://spoonacular.com/food-api"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Spoonacular's API
+            </a>
+          </h1>
 
-      <div className="justify-center items-center flex flex-col">
-        <h3 className="text-indigo-600 sm:text-lg lg:text-xl font-light">Not finding what you want?</h3>
-        <h1 className="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-center text-indigo-600">Search and add from <a className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600 hover:text-green-500" href="https://spoonacular.com/food-api" target="_blank" rel="noreferrer">Spoonacular's API</a></h1>
+          <div>
+            <input
+              type="text"
+              id="search"
+              autoComplete="off"
+              placeholder="Search here."
+              onChange={(e) => searchSpoonacular(e.target.value)}
+              className="mt-2 px-2 py-1 border-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 sm:px-4 sm:mt-3 lg:w-80 shadow-xl transition-all duration-300"
+            />
 
-<div>
-      <input
-        type="text"
-        id="search"
-        autoComplete="off"
-        placeholder="Search here."
-        onChange={(e) => {
-          setSearchInput(e.target.value);
-          if(searchInput.length >= 3){
-
-            const getSearchResults = async () => {
-              const res = await fetch(
-                `https://api.spoonacular.com/recipes/autocomplete?apiKey=${API_KEY}&number=3&query=${searchInput}`
-                
-              );
-              const searchRes = await res.json()
-              setSearchResults(searchRes)
-            };
-
-            getSearchResults();
-            console.log(searchResults)
-          }
-          
-        }}
-        className="mt-2 px-2 py-1 border-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 sm:px-4 sm:mt-3 lg:w-80 shadow-xl transition-all duration-300"
-      />
-
-      {!searchResults.length ? "" : searchResults.filter(result => presentItems[result.title] !== true).map(result =>
-      <Autocomplete title={result.title} id={result.id} setMenuItems={setMenuItems} menuItems={menuItems} key={result.id} API_KEY={API_KEY} presentItems={presentItems} setPresentItems={setPresentItems} />
-        
-    )}
-    </div>
-      
-      </div>
-
-
-
-
-
-<div className="mt-10 min-h-[200px] flex flex-col items-center">
-
-      {Object.keys(currentOrder).length > 0 &&  <><Order currentOrder={currentOrder} currentTotal={currentTotal} setCurrentOrder={setCurrentOrder} /><button
-          onClick={confirmOrder}
-          disabled={Object.keys(currentOrder).length === 0 ? true : false}
-          className="my-6 px-2 py-2 rounded-lg shadow-xl bg-indigo-600 text-gray-100 hover:bg-indigo-700 hover:scale-105 transition-all duration-300 hover:text-white disabled:opacity-60 disabled:pointer-events-none font-bold disabled:shadow-none text-xl sm:text-2xl"
-        >
-          Make Order
-        </button></>}
-       
-
+            {!searchResults.length
+              ? ""
+              : searchResults
+                  .filter((result) => presentItems[result.title] !== true)
+                  .map((result) => (
+                    <Autocomplete
+                      title={result.title}
+                      id={result.id}
+                      setMenuItems={setMenuItems}
+                      menuItems={menuItems}
+                      key={result.id}
+                      API_KEY={API_KEY}
+                      presentItems={presentItems}
+                      setPresentItems={setPresentItems}
+                    />
+                  ))}
+          </div>
         </div>
 
+        <div className="mt-10 min-h-[200px] flex flex-col items-center">
+          {Object.keys(currentOrder).length > 0 && (
+            <>
+              <Order
+                currentOrder={currentOrder}
+                currentTotal={currentTotal}
+                setCurrentOrder={setCurrentOrder}
+              />
+              <button
+                onClick={confirmOrder}
+                disabled={Object.keys(currentOrder).length === 0 ? true : false}
+                className="my-6 px-2 py-2 rounded-lg shadow-xl bg-indigo-600 text-gray-100 hover:bg-indigo-700 hover:scale-105 transition-all duration-300 hover:text-white disabled:opacity-60 disabled:pointer-events-none font-bold disabled:shadow-none text-xl sm:text-2xl"
+              >
+                Make Order
+              </button>
+            </>
+          )}
+        </div>
       </section>
 
       <Footer />
@@ -178,12 +184,7 @@ const Menu = () => {
   );
 };
 
-
-
-
-
-
-
+// An initial example menu, to allow showing the basic functionality of the site even if there are no API points left.
 
 const exampleMenu = [
   {
@@ -199,14 +200,14 @@ const exampleMenu = [
   },
   {
     title: "Falafel with spinach",
-    pricePerServing: 100.10,
+    pricePerServing: 100.1,
     readyInMinutes: 15,
     image:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Falafel_balls.jpg/640px-Falafel_balls.jpg",
     id: 2,
     healthScore: 50,
     vegan: true,
-    aggregateLikes: 640,
+    aggregateLikes: 453,
   },
   {
     title: "The pretentious atrocity",

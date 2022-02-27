@@ -7,8 +7,12 @@ import About from "./views/About";
 import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
-  //The keys are the emails, each key contains an object with the password, the token received on account creation and all the orders.
+
+  // The keys of the Users array are the emails, and each key contains an object with the password, the token received on account creation and all the orders.
+
   const [users, setUsers] = useLocalStorage("users", {});
+
+  // If there is an active user, allow access to protected routes.
 
   const [activeUser, setActiveUser] = useLocalStorage("activeUser", [
     false,

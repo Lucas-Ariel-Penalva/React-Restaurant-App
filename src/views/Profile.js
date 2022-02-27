@@ -1,11 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
-import { useState, useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import SavedOrder from "../components/SavedOrder";
 import Navigation from "../components/Navigation";
-import Order from "../components/Order";
 import Footer from "../components/Footer";
 
 const Profile = () => {
@@ -15,6 +13,8 @@ const Profile = () => {
     "",
   ]);
   const orders = activeUser[0] === false ? [] : users[activeUser[0]].orders;
+
+  // A user can "log off" and all the data will be persisted in Local Storage, allowing him to log back in with his email and password.
 
   const logOff = () => {
     Swal.fire({
@@ -49,13 +49,9 @@ const Profile = () => {
     });
   };
 
-  console.log(orders);
-
   return (
     <div className="bg-gradient-to-b from-indigo-100 to-indigo-300 min-h-screen">
       <Navigation />
-
-    
 
       <div className="flex justify-end mt-3 mr-4 sm:mt-4 sm:mr-6 lg:mt-5 lg:mr-7">
         <button
@@ -73,11 +69,12 @@ const Profile = () => {
         </button>
       </div>
 
-    
-
       <div className="min-h-screen">
         {orders.length === 0 ? (
-          <p className="m-6 sm:m-8 lg:m-10 text-lg md:text-xl text-indigo-900 font-semibold">Once you buy from our menu, everything that you ordered will be displayed here.</p>
+          <p className="m-6 sm:m-8 lg:m-10 text-lg md:text-xl text-center text-indigo-900 font-semibold">
+            Once you buy from our menu, everything that you ordered will be
+            displayed here.
+          </p>
         ) : (
           <main className="mx-10 mb-10 grid rows gap-5 sm:gap-7 mt-7">
             {" "}

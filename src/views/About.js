@@ -49,7 +49,8 @@ const About = () => {
           <br />
           <p>
             This is a take-home project I built according to what was requested
-            to me. I had a limited amount of time, which impacted the clarity of the code, but all the desired functionality was achieved.
+            to me. I had a limited amount of time, which impacted the clarity of
+            the code, but all the desired functionality was achieved.
           </p>
         </div>
       </main>
