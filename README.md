@@ -62,7 +62,7 @@ La pagina principal del Menú contiene las tarjetas que muestran los platos, bot
 
 El menú carga unos platos de ejemplo (Dummy Data para mostrar la funcionalidad de la App incluso si Spoonacular no responde porque se acabaron los points de la API KEY o por algun otro motivo).
 
-### * Botones de Sorting.
+### * Botones de Sorting:
 
 Permite organizar el menú según el criterio elegido: mas barato, mas saludable o con mas likes.
 
@@ -79,24 +79,24 @@ Se muestra cada plato en una tarjeta que contiene:
 
 En Page Load, estas tarjetas muestran Dummy Data. Se pueden agregar mas platos usando la API de Spoonacular.
 
-### * Componente de Orden.
+### * Componente de Orden/Pedido:
 
 Las comidas pedidas se van sumando a una orden que se muestra en la parte inferior del menú. Se muestra el nombre de cada plato, la cantidad que se esta pidiendo, el costo de cada ítem individual y el total global.
 
-### * Search Bar vinculada a Spoonacular.
+### * Search Bar vinculada a Spoonacular:
 
 Se pueden agregar platos de la API de Spoonacular usando la barra de busqueda. Cuando una persona escribe tres o mas letras, se le pide un autocomplete a Spoonacular. Si hay ítems que encajan con la Query del usuario, se muestran abajo de la barra con un botón que permite agregarlos directamente al menú.
 
 
-### * Realizar ordenes y verlas en la profile page
+### * Realizar ordenes y verlas en la Profile page:
 
 Cuando se confirma una orden, queda guardada en la cuenta del usuario y luego puede ser vista en la Profile page.
 
-### * Sweet Alerts
+### * Sweet Alerts:
 
 Use Sweet Alerts para pedir una confirmación de cada acción importante (registrarse, loguearse, hacer un pedido, borrar la cuenta).
 
-### * Responsiveness, Iconos y Pseudo-estados
+### * Responsiveness, Iconos y Pseudo-estados:
 
 El sitio es responsive, adaptándose correctamente a Viewports que van desde 360 px a 1200px de ancho. Las fuentes, los margenes, el padding, etc. de la mayoría de los elementos se adaptan según el ancho de pantalla.
 
@@ -151,7 +151,7 @@ Me parecía importante detallar los problemas y mostrar que entiendo muy bien cu
 
 
 
-## 3) Mi relación especifica con el challenge.
+## 3) Mi experiencia con el challenge.
 
 Como mi solución al challenge cumple con todos los requisitos, en cierto sentido seria apropiado encontrarla aceptable o sentirse conforme. Sin embargo, soy conciente de no haber usado el tiempo disponible de la mejor forma, lo cual impacto la calidad del código. Cometí un ligero error al establecer las prioridades.
 
