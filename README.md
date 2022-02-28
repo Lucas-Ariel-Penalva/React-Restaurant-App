@@ -70,12 +70,12 @@ Permite organizar el menú según el criterio elegido: mas barato, mas saludable
 
 Se muestra cada plato en una tarjeta que contiene:
 
-* Imagen
-* área de texto
-* titulo
-* precio
-* información mas relevante de la comida
-* un botón para sumarlo a la orden.
+* Imagen.
+* Área de texto.
+* Titulo.
+* Precio.
+* Información mas relevante de la comida.
+* Un botón para sumarlo a la orden.
 
 En Page Load, estas tarjetas muestran Dummy Data. Se pueden agregar mas platos usando la API de Spoonacular.
 
@@ -124,7 +124,7 @@ Si bien mi solución al challenge cumple con todos los requisitos principales y 
 
 * La View del Menú esta guardando piezas importantes de State que absolutamente deberían ser elevadas ("Lifting state up", como dice la documentación de React). Es por esto que el menú y la orden en progreso se limpian cuando se va a otra Route, algo que no es deseable.
 
-* Actualmente no hay suficiente Error Checking. Se avisa al usuario de ciertos errores usando Sweet Alerts, pero faltan Checks y notificaciones importantes que mejorarían la User Experience.
+* Actualmente no hay suficiente Error Handling. Se avisa al usuario de ciertos errores usando Sweet Alerts, pero faltan Checks y notificaciones importantes que mejorarían la User Experience.
 
 * En Log Out o Delete Account: Se puede ver durante un momento el texto que se muestra cuando aun no se hizo una orden.
 
@@ -132,36 +132,33 @@ Si bien mi solución al challenge cumple con todos los requisitos principales y 
 
 ### Estilos y CSS: 
 
-* React y TailwindCSS van excelentes juntos, pero para que funcione y produzca código claro es imperativo extraer partes de la App en componentes *apenas* tenga sentido hacerlo. Yo extraje varias partes de la App en componentes, pero no las suficientes. Por eso se pueden ver botones o inputs con estilos practicamente idénticos uno al lado del otro, cuando lo mejor es tener una Single-Source-Of-Truth para cada uno de esos elementos.
-
-Tailwind me permitió avanzar mas rapido mientras hacia custom-CSS, pero al no extraer la suficiente cantidad de componentes el HTML se hizo extenso en ciertas áreas y puede resultar difícil de leer.
+* React y TailwindCSS van excelentes juntos, pero para que funcione y produzca código claro es imperativo extraer partes de la App en componentes *apenas* tenga sentido hacerlo. Yo extraje varias partes de la App en componentes, pero no las suficientes. Por eso se pueden ver botones o inputs con estilos practicamente idénticos uno al lado del otro, cuando lo mejor es tener una Single-Source-Of-Truth para cada uno de esos elementos. Tailwind me permitió avanzar mas rapido mientras hacia Custom-CSS, pero al no extraer la suficiente cantidad de componentes el HTML se hizo extenso en ciertas áreas y puede resultar difícil de leer.
 
 
-* No hice el CSS para targetear dispositivos que tienen Dark-Mode enabled. Esto hace que los elementos pueden variar de color radicalmente de formas que no programe especificamente.
+* No hice CSS especifico para dispositivos que tienen Dark-Mode enabled. Esto hace que los elementos puedan variar de color de formas que no programe especificamente.
 
 * Al comenzar el proyecto, tuve la ambición de hacerlo totalmente accesible a Screen Readers y pase mucho tiempo leyendo y aprendiendo al respecto. La falta de tiempo me llevo a abandonar esa intención pero en algunas partes del HTML aun se pueden ver restos de ese intento de cubrir a Screen Readers.
 
 * Al ser un proyecto individual y no basarme en ningún otro sitio o template, tuve que hacer toda la interfaz sobre la marcha. Por eso algunos elementos se ven extraños, hay algunos problemas ligeros de alineación de ciertos elementos y bordes que sobresalen uno o dos píxeles mas de lo que deberían.
 
 
+Muchos de estos problemas se podrían arreglar tan solo en un día, pero *termine este challenge con el tiempo exacto* y no quiero introducir cambios importantes en la lógica en el mismo día de la fecha de entrega.
 
-Muchos de estos problemas se podrían arreglar tan solo en un día, pero termine este challenge con el tiempo exacto y no quiero introducir cambios importantes en la lógica en el mismo día de la fecha de entrega.
-
-Me parecía importante detallar los problemas y mostrar que entiendo muy bien cuales serian las mejores practicas en una situación real.
+Me parecía importante detallar los problemas y mostrar que entiendo cuales serian las mejores practicas en una situación real.
 
 
 
 ## 3) Mi experiencia con el challenge.
 
-Como mi solución al challenge cumple con todos los requisitos, en cierto sentido seria apropiado encontrarla aceptable o sentirse conforme. Sin embargo, soy conciente de no haber usado el tiempo disponible de la mejor forma, lo cual impacto la calidad del código. Cometí un ligero error al establecer las prioridades.
+Como mi solución al challenge cumple con todos los requisitos, en cierto sentido seria apropiado encontrarla aceptable o sentirse conforme. Sin embargo, soy conciente de no haber usado el tiempo disponible de la mejor forma, lo cual impacto la calidad del código. Cometí un error al establecer las prioridades.
 
 Si me hubiese limitado a cumplir estrictamente con lo que se pidió en los requerimientos, seria posible entregar una App con código realmente limpio. Sin embargo, invertí mucho tiempo en Features extra como simular una base de datos, la profile page que muestra pedidos pasados, una funcion de Login separada de la de Registro, etc.
 
-Actualmente mi especialidad son los temas mas vinculados a la programación pura: estructuras de datos, algoritmos, análisis de complejidad temporal, etc. Resolví cientos de problemas usando Javascript mientras practicaba estas habilidades, algo que hice inicialmente para prepararme para hacer entrevistas técnicas. Así llegue a estar [en el Top 0,2% de usuarios de Codewars](https://www.codewars.com/users/Lucas%20Ariel).
+Actualmente mi especialidad son los temas mas vinculados a la programación pura: estructuras de datos, algoritmos, análisis de complejidad temporal, etc. Resolví cientos de problemas usando Javascript mientras practicaba estas habilidades, algo que hice inicialmente como preparación para entrevistas técnicas. Así llegue a estar [en el Top 0,2% de usuarios de Codewars](https://www.codewars.com/users/Lucas%20Ariel).
 
 Como tengo tanta experiencia con algoritmos, todo lo que tenga que ver con hacer Sorts, Filters o Maps es extremadamente trivial para mi. Por eso pensé que podía agregar toda clase de Features Extras en muy poco tiempo, pero al estar usando Local Storage y tener que coordinarlo también con los componentes de React, termine consumiendo mas tiempo del esperado.
 
-Si pudiera hacerlo devuelta, preferiría limitar el Scope del proyecto e incrementar la calidad del código.
+Si pudiera hacerlo devuelta, preferiría limitar el Scope del proyecto e incrementar la calidad del código para hacerlo mas mantenible y claro.
 
 Lo tomo como una experiencia de aprendizaje sumamente positiva y un buen proyecto para sumar a mi CV.
 
