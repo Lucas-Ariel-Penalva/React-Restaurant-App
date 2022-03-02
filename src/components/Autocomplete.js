@@ -14,7 +14,7 @@ const Autocomplete = ({
         onClick={async () => {
           const updatedMenu = menuItems.slice();
           const res = await fetch(
-            `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}?includeNutrition=false`
+            `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}&includeNutrition=false`
           );
           const newItem = await res.json();
           updatedMenu.push(newItem);
