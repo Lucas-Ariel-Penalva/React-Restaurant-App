@@ -13,6 +13,11 @@
 
 --------------
 
+#### Update 2/3/2022, único cambio: Arregle un Bug tanto en la Build como en el código sobre como se hacia la Request para cargar nuevos items de Spoonacular. Ahora deberian poder agregarse nuevos items al menu siempre.
+
+
+-------------
+
 # Hola, Alkemy 👋
 
 Este README detalla todas las features de la App, los puntos a mejorar y mi experiencia con el challenge.
